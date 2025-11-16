@@ -89,8 +89,6 @@ bash
 Copy
 MISTRAL_API_KEY=sua_chave_mistral_aqui
 ```
-⚠️ IMPORTANTE: Nunca compartilhe sua API key publicamente!
-
 ### 🚀 Como Executar
 Executar o Agente
 ```bash
