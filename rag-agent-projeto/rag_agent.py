@@ -17,17 +17,15 @@ load_dotenv()
 print("🚀 INICIANDO AGENTE RAG COM LANGCHAIN\n")
 print("="*80)
 
-# ========================================
 # PASSO 1: INICIALIZAR MODELOS
-# ========================================
+
 print("\nInicializando modelos...")
 llm = ChatMistralAI(model="mistral-small-latest", temperature=0.7)
 embeddings = MistralAIEmbeddings(model="mistral-embed")
 print("Modelos inicializados!")
 
-# ========================================
 # PASSO 2: CARREGAR DOCUMENTOS
-# ========================================
+
 print("\nCarregando documentos...")
 url = "https://lilianweng.github.io/posts/2023-06-23-agent/"
 bs4_strainer = bs4.SoupStrainer(class_=("post-title", "post-header", "post-content"))
@@ -36,9 +34,8 @@ docs = loader.load()
 print(f"{len(docs)} documento(s) carregado(s)")
 print(f"Total de caracteres: {len(docs[0].page_content)}")
 
-# ========================================
 # PASSO 3: DIVIDIR DOCUMENTOS
-# ========================================
+
 print("\nDividindo documentos em chunks...")
 text_splitter = RecursiveCharacterTextSplitter(
     chunk_size=1000,
@@ -48,24 +45,21 @@ text_splitter = RecursiveCharacterTextSplitter(
 splits = text_splitter.split_documents(docs)
 print(f"Documento dividido em {len(splits)} chunks")
 
-# ========================================
 # PASSO 4: CRIAR E POPULAR VECTOR STORE
-# ========================================
+
 print("\nCriando Vector Store e armazenando vetores...")
 vector_store = InMemoryVectorStore(embeddings)
 vector_store.add_documents(splits)
 print(f"{len(splits)} vetores armazenados!")
 
-# ========================================
 # PASSO 5: CRIAR RETRIEVER
-# ========================================
+
 print("\nCriando retriever...")
 retriever = vector_store.as_retriever(search_kwargs={"k": 3})
 print("Retriever criado!")
 
-# ========================================
 # PASSO 6: CRIAR PROMPT TEMPLATE
-# ========================================
+
 print("\nCriando template de prompt...")
 template = """Você é um assistente especializado que responde perguntas baseado no contexto fornecido.
 
@@ -139,9 +133,8 @@ for i, pergunta in enumerate(perguntas, 1):
 print("\nCONSULTAS CONCLUÍDAS!")
 print("="*80)
 
-# ========================================
 # MODO INTERATIVO (OPCIONAL)
-# ========================================
+
 print("\n" + "="*80)
 print("MODO INTERATIVO")
 print("="*80)
